@@ -18,7 +18,7 @@ func NewPostgreSQLDatabase() (*sql.DB, error) {
 	}
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
-	dbName := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME")
 
 	psqlInfo := fmt.Sprintf(
 		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
