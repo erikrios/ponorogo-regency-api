@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:14.1
+    restart: always
+    container_name: ponorogo-regency-db
+    environment: 
+      POSTGRES_USER: 'erikrios'
+      POSTGRES_PASSWORD: 'erikrios'
+      POSTGRES_DB: 'ponorogo_regency_db'
+    ports:
+      - '5432:5432'
+    expose:
+      - '5432'
