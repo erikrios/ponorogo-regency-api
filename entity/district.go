@@ -1,4 +1,4 @@
-package entities
+package entity
 
 type District struct {
 	ID      string
