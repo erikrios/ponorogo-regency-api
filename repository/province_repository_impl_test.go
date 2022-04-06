@@ -102,7 +102,7 @@ func TestFindByID(t *testing.T) {
 	})
 
 	t.Run("it should return error, when database return an error", func(t *testing.T) {
-		mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.id = \$1;`).WillReturnError(ErrDatabase)
+		mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.id = \$1;`).WithArgs(expectedProvince.ID).WillReturnError(ErrDatabase)
 
 		var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
 
@@ -122,6 +122,56 @@ func TestFindByID(t *testing.T) {
 
 		if _, err := repo.FindByID(context.Background(), expectedProvince.ID); assert.Error(t, err) {
 			assert.Equal(t, ErrQueryNotFound, err)
+		}
+
+		if err := mock.ExpectationsWereMet(); err != nil {
+			t.Fatal(err)
+		}
+	})
+}
+
+func TestFindByName(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+
+	expectedProvinces := []entity.Province{
+		{
+			ID:   "32",
+			Name: "Jawa Timur",
+		},
+	}
+
+	returnedRows := sqlmock.NewRows([]string{"id", "name"})
+	for _, province := range expectedProvinces {
+		returnedRows.AddRow(province.ID, province.Name)
+	}
+	t.Run("it should return valid provinces, when database successfully return the data", func(t *testing.T) {
+		mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.name ILIKE \$1;`).WithArgs(expectedProvinces[0].Name).WillReturnRows(returnedRows)
+
+		var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
+
+		got, err := repo.FindByName(context.Background(), expectedProvinces[0].Name)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if err := mock.ExpectationsWereMet(); err != nil {
+			t.Fatal(err)
+		}
+
+		assert.ElementsMatch(t, expectedProvinces, got)
+	})
+
+	t.Run("it should return error, when database return an error", func(t *testing.T) {
+		mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.name ILIKE \$1;`).WithArgs(expectedProvinces[0].Name).WillReturnError(ErrDatabase)
+
+		var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
+
+		if _, err := repo.FindByName(context.Background(), expectedProvinces[0].Name); assert.Error(t, err) {
+			assert.Equal(t, ErrDatabase, err)
 		}
 
 		if err := mock.ExpectationsWereMet(); err != nil {
