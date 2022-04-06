@@ -65,5 +65,31 @@ func (p *provinceRepositoryImpl) FindByID(ctx context.Context, id string) (provi
 }
 
 func (p *provinceRepositoryImpl) FindByName(ctx context.Context, keyword string) (provinces []entity.Province, err error) {
+	statement := "SELECT p.id, p.name FROM provinces p WHERE p.name ILIKE $1;"
+
+	rows, err := p.db.QueryContext(ctx, statement, keyword)
+	if err != nil {
+		log.Println(err)
+		err = ErrDatabase
+		return
+	}
+
+	defer func(rows *sql.Rows) {
+		if err = rows.Close(); err != nil {
+			log.Println(err.Error())
+		}
+	}(rows)
+
+	provinces = make([]entity.Province, 0)
+	for rows.Next() {
+		var province entity.Province
+		if err = rows.Scan(&province.ID, &province.Name); err != nil {
+			log.Println(err)
+			err = ErrDatabase
+			return
+		}
+		provinces = append(provinces, province)
+	}
+
 	return
 }
