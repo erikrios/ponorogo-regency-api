@@ -1,1 +1,1 @@
-TRUNCATE districts;
+TRUNCATE districts CASCADE;

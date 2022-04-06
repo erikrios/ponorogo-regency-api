@@ -1,1 +1,1 @@
-TRUNCATE provinces;
+TRUNCATE provinces CASCADE;

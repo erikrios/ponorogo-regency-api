@@ -1,1 +1,1 @@
-TRUNCATE regencies;
+TRUNCATE regencies CASCADE;

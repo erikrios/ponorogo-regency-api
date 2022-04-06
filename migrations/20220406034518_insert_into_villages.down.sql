@@ -1,1 +1,1 @@
-TRUNCATE villages;
+TRUNCATE villages CASCADE;
