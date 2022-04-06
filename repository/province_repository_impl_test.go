@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"database/sql"
 	"log"
 	"testing"
 
@@ -60,6 +61,67 @@ func TestFindAll(t *testing.T) {
 
 		if _, err := repo.FindAll(context.Background()); assert.Error(t, err) {
 			assert.Equal(t, ErrDatabase, err)
+		}
+
+		if err := mock.ExpectationsWereMet(); err != nil {
+			t.Fatal(err)
+		}
+	})
+}
+
+func TestFindByID(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+
+	expectedProvince := entity.Province{
+		ID:   "32",
+		Name: "Jawa Timur",
+	}
+
+	returnedRows := sqlmock.NewRows([]string{"id", "name"})
+	returnedRows.AddRow(expectedProvince.ID, expectedProvince.Name)
+
+	t.Run("it should return valid province, when database successfully return the data", func(t *testing.T) {
+		mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.id = \$1;`).WithArgs(expectedProvince.ID).WillReturnRows(returnedRows)
+
+		var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
+
+		got, err := repo.FindByID(context.Background(), expectedProvince.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if err := mock.ExpectationsWereMet(); err != nil {
+			t.Fatal(err)
+		}
+
+		assert.Equal(t, expectedProvince, got)
+	})
+
+	t.Run("it should return error, when database return an error", func(t *testing.T) {
+		mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.id = \$1;`).WillReturnError(ErrDatabase)
+
+		var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
+
+		if _, err := repo.FindByID(context.Background(), expectedProvince.ID); assert.Error(t, err) {
+			assert.Equal(t, ErrDatabase, err)
+		}
+
+		if err := mock.ExpectationsWereMet(); err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	t.Run("it should return not found error, when given id not found in the  database", func(t *testing.T) {
+		mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.id = \$1;`).WithArgs(expectedProvince.ID).WillReturnError(sql.ErrNoRows)
+
+		var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
+
+		if _, err := repo.FindByID(context.Background(), expectedProvince.ID); assert.Error(t, err) {
+			assert.Equal(t, ErrQueryNotFound, err)
 		}
 
 		if err := mock.ExpectationsWereMet(); err != nil {
