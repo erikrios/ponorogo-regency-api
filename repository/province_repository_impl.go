@@ -21,6 +21,7 @@ func (p *provinceRepositoryImpl) FindAll(ctx context.Context) (provinces []entit
 
 	rows, err := p.db.QueryContext(ctx, statement)
 	if err != nil {
+		log.Println(err)
 		err = ErrDatabase
 		return
 	}
@@ -35,6 +36,7 @@ func (p *provinceRepositoryImpl) FindAll(ctx context.Context) (provinces []entit
 	for rows.Next() {
 		var province entity.Province
 		if err = rows.Scan(&province.ID, &province.Name); err != nil {
+			log.Println(err)
 			err = ErrDatabase
 			return
 		}
