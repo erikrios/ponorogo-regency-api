@@ -47,7 +47,21 @@ func (p *provinceRepositoryImpl) FindAll(ctx context.Context) (provinces []entit
 }
 
 func (p *provinceRepositoryImpl) FindByID(ctx context.Context, id string) (province entity.Province, err error) {
-	return
+	statement := "SELECT p.id, p.name FROM provinces p WHERE p.id = $1;"
+
+	row := p.db.QueryRowContext(ctx, statement, id)
+
+	switch scanErr := row.Scan(&province.ID, &province.Name); scanErr {
+	case sql.ErrNoRows:
+		err = ErrQueryNotFound
+		return
+	case nil:
+		return
+	default:
+		err = ErrDatabase
+		log.Println(scanErr)
+		return
+	}
 }
 
 func (p *provinceRepositoryImpl) FindByName(ctx context.Context, keyword string) (provinces []entity.Province, err error) {
