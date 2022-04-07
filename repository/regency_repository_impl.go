@@ -35,7 +35,7 @@ func (r *regencyRepositoryImpl) FindAll(ctx context.Context) (regencies []entity
 	regencies = make([]entity.Regency, 0)
 	for rows.Next() {
 		var regency entity.Regency
-		if err = rows.Scan(&regency.ID, &regency.Name); err != nil {
+		if err = rows.Scan(&regency.ID, &regency.Name, &regency.Province.ID, &regency.Province.Name); err != nil {
 			log.Println(err)
 			err = ErrDatabase
 			return
@@ -51,7 +51,7 @@ func (r *regencyRepositoryImpl) FindByID(ctx context.Context, id string) (regenc
 
 	row := r.db.QueryRowContext(ctx, statement, id)
 
-	switch scanErr := row.Scan(&regency.ID, &regency.Name); scanErr {
+	switch scanErr := row.Scan(&regency.ID, &regency.Name, &regency.Province.ID, &regency.Province.Name); scanErr {
 	case sql.ErrNoRows:
 		err = ErrQueryNotFound
 		return
@@ -83,7 +83,7 @@ func (r *regencyRepositoryImpl) FindByName(ctx context.Context, keyword string) 
 	regencies = make([]entity.Regency, 0)
 	for rows.Next() {
 		var regency entity.Regency
-		if err = rows.Scan(&regency.ID, &regency.Name); err != nil {
+		if err = rows.Scan(&regency.ID, &regency.Name, &regency.Province.ID, &regency.Province.Name); err != nil {
 			log.Println(err)
 			err = ErrDatabase
 			return
