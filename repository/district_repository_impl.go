@@ -79,7 +79,7 @@ func (d *districtRepositoryImpl) FindByID(ctx context.Context, id string) (distr
 }
 
 func (d *districtRepositoryImpl) FindByName(ctx context.Context, keyword string) (districts []entity.District, err error) {
-	statement := "SELECT d.id, d.name, d.regency_id, r.name AS regency_name, r.province_id, p.name AS province_name FROM districts d INNER JOIN regencies r on d.regency_id = r.id INNER JOIN provinces p on r.province_id = p.id WHERE d.name ILIKE '%$1%';"
+	statement := "SELECT d.id, d.name, d.regency_id, r.name AS regency_name, r.province_id, p.name AS province_name FROM districts d INNER JOIN regencies r on d.regency_id = r.id INNER JOIN provinces p on r.province_id = p.id WHERE d.name ILIKE '%' || $1 || '%';"
 
 	rows, err := d.db.QueryContext(ctx, statement, keyword)
 	if err != nil {

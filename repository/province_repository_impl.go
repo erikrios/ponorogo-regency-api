@@ -65,7 +65,7 @@ func (p *provinceRepositoryImpl) FindByID(ctx context.Context, id string) (provi
 }
 
 func (p *provinceRepositoryImpl) FindByName(ctx context.Context, keyword string) (provinces []entity.Province, err error) {
-	statement := "SELECT p.id, p.name FROM provinces p WHERE p.name ILIKE '%$1%';"
+	statement := "SELECT p.id, p.name FROM provinces p WHERE p.name ILIKE '%' || $1 || '%';"
 
 	rows, err := p.db.QueryContext(ctx, statement, keyword)
 	if err != nil {

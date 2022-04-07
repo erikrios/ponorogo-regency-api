@@ -83,7 +83,7 @@ func (v *villageRepositoryImpl) FindByID(ctx context.Context, id string) (villag
 }
 
 func (v *villageRepositoryImpl) FindByName(ctx context.Context, keyword string) (villages []entity.Village, err error) {
-	statement := "SELECT v.id, v.name, v.district_id, d.name AS district_name, d.regency_id, r.name AS regency_name, r.province_id, p.name AS province_name FROM villages v INNER JOIN districts d on d.id = v.district_id INNER JOIN regencies r on d.regency_id = r.id INNER JOIN provinces p on r.province_id = p.id WHERE v.name ILIKE '%$1%';"
+	statement := "SELECT v.id, v.name, v.district_id, d.name AS district_name, d.regency_id, r.name AS regency_name, r.province_id, p.name AS province_name FROM villages v INNER JOIN districts d on d.id = v.district_id INNER JOIN regencies r on d.regency_id = r.id INNER JOIN provinces p on r.province_id = p.id WHERE v.name ILIKE '%' || $1 || '%';"
 
 	rows, err := v.db.QueryContext(ctx, statement, keyword)
 	if err != nil {
@@ -161,7 +161,7 @@ func (v *villageRepositoryImpl) FindByDistrictID(ctx context.Context, districtID
 }
 
 func (v *villageRepositoryImpl) FindByDistrictName(ctx context.Context, keyword string) (villages []entity.Village, err error) {
-	statement := "SELECT v.id, v.name, v.district_id, d.name AS district_name, d.regency_id, r.name AS regency_name, r.province_id, p.name AS province_name FROM villages v INNER JOIN districts d on d.id = v.district_id INNER JOIN regencies r on d.regency_id = r.id INNER JOIN provinces p on r.province_id = p.id WHERE d.name ILIKE '%$1%';"
+	statement := "SELECT v.id, v.name, v.district_id, d.name AS district_name, d.regency_id, r.name AS regency_name, r.province_id, p.name AS province_name FROM villages v INNER JOIN districts d on d.id = v.district_id INNER JOIN regencies r on d.regency_id = r.id INNER JOIN provinces p on r.province_id = p.id WHERE d.name ILIKE '%' || $1 || '%';"
 
 	rows, err := v.db.QueryContext(ctx, statement, keyword)
 	if err != nil {

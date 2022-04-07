@@ -65,7 +65,7 @@ func (r *regencyRepositoryImpl) FindByID(ctx context.Context, id string) (regenc
 }
 
 func (r *regencyRepositoryImpl) FindByName(ctx context.Context, keyword string) (regencies []entity.Regency, err error) {
-	statement := "SELECT r.id, r.name, r.province_id, p.name AS province_name FROM regencies r INNER JOIN provinces p on r.province_id = p.id WHERE r.name ILIKE '%$1%';"
+	statement := "SELECT r.id, r.name, r.province_id, p.name AS province_name FROM regencies r INNER JOIN provinces p on r.province_id = p.id WHERE r.name ILIKE '%' || $1 || '%';"
 
 	rows, err := r.db.QueryContext(ctx, statement, keyword)
 	if err != nil {
