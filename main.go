@@ -35,6 +35,8 @@ func main() {
 		middleware.BodyLimit(e)
 		middleware.Gzip(e)
 		middleware.RateLimiter(e)
+		middleware.Recover(e)
+		middleware.Secure(e)
 	} else {
 		middleware.Logger(e)
 	}
