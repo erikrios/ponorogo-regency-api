@@ -1,10 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/erikrios/ponorogo-regency-api/config"
+	"github.com/erikrios/ponorogo-regency-api/controller"
 	"github.com/joho/godotenv"
+	"github.com/labstack/echo/v4"
 )
 
 func main() {
@@ -19,4 +23,14 @@ func main() {
 	} else {
 		log.Printf("Successfully connected to database with instance address: %p", db)
 	}
+
+	port := fmt.Sprintf(":%s", os.Getenv("PORT"))
+
+	homeController := controller.NewHomeController()
+
+	e := echo.New()
+
+	homeController.Route(e)
+
+	e.Logger.Fatal(e.Start(port))
 }
