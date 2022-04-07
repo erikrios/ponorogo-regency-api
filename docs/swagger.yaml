@@ -1,4 +1,42 @@
+basePath: /v1
+definitions:
+  controller.response:
+    properties:
+      data:
+        type: string
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+host: localhost
 info:
-  contact: {}
-paths: {}
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: API for Administrative Subdivisions of Ponorogo Regency (Districts
+    and Villages).
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Ponorogo Regency API
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: Show the hello message
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.response'
+      summary: Check the API Connectivity
+      tags:
+      - home
 swagger: "2.0"
