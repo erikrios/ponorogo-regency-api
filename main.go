@@ -34,6 +34,7 @@ func main() {
 	if os.Getenv("ENV") == "production" {
 		middleware.BodyLimit(e)
 		middleware.Gzip(e)
+		middleware.RateLimiter(e)
 	} else {
 		middleware.Logger(e)
 	}
