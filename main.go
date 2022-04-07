@@ -7,11 +7,27 @@ import (
 
 	"github.com/erikrios/ponorogo-regency-api/config"
 	"github.com/erikrios/ponorogo-regency-api/controller"
+	_ "github.com/erikrios/ponorogo-regency-api/docs"
 	"github.com/erikrios/ponorogo-regency-api/middleware"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
+// @title Ponorogo Regency API
+// @version 1.0
+// @description API for Administrative Subdivisions of Ponorogo Regency (Districts and Villages).
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost
+// @BasePath /v1
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	if err := godotenv.Load(".env"); err != nil {
@@ -41,6 +57,7 @@ func main() {
 		middleware.Logger(e)
 	}
 
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	homeController.Route(e)
 
 	e.Logger.Fatal(e.Start(port))
