@@ -7,6 +7,7 @@ import (
 
 	"github.com/erikrios/ponorogo-regency-api/config"
 	"github.com/erikrios/ponorogo-regency-api/controller"
+	"github.com/erikrios/ponorogo-regency-api/middleware"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 )
@@ -29,6 +30,13 @@ func main() {
 	homeController := controller.NewHomeController()
 
 	e := echo.New()
+
+	if os.Getenv("ENV") == "production" {
+		middleware.BodyLimit(e)
+		middleware.Gzip(e)
+	} else {
+		middleware.Logger(e)
+	}
 
 	homeController.Route(e)
 
