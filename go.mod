@@ -1,5 +1,6 @@
 module github.com/erikrios/ponorogo-regency-api
 
+// +heroku goVersion go1.18
 go 1.18
 
 require (
