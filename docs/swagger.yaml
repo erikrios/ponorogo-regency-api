@@ -1,5 +1,25 @@
 basePath: /v1
 definitions:
+  controller.provinceResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.Province'
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  controller.provincesResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Province'
+        type: array
+      message:
+        type: string
+      status:
+        type: string
+    type: object
   controller.response:
     properties:
       data:
@@ -7,6 +27,17 @@ definitions:
       message:
         type: string
       status:
+        type: string
+    type: object
+  echo.HTTPError:
+    properties:
+      message: {}
+    type: object
+  model.Province:
+    properties:
+      id:
+        type: string
+      name:
         type: string
     type: object
 host: localhost
@@ -39,4 +70,57 @@ paths:
       summary: Check the API Connectivity
       tags:
       - home
+  /api/v1/provinces:
+    get:
+      consumes:
+      - application/json
+      description: Get provinces
+      parameters:
+      - description: province name search by keyword
+        in: query
+        name: keyword
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.provincesResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get Provinces
+      tags:
+      - provinces
+  /api/v1/provinces/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get provinces by ID
+      parameters:
+      - description: Province ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.provinceResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get Province by ID
+      tags:
+      - provinces
 swagger: "2.0"
