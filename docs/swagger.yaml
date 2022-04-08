@@ -1,5 +1,25 @@
-basePath: /v1
+basePath: /
 definitions:
+  controller.districtResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.District'
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  controller.districtsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.District'
+        type: array
+      message:
+        type: string
+      status:
+        type: string
+    type: object
   controller.provinceResponse:
     properties:
       data:
@@ -20,6 +40,26 @@ definitions:
       status:
         type: string
     type: object
+  controller.regenciesResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Regency'
+        type: array
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  controller.regencyResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.Regency'
+      message:
+        type: string
+      status:
+        type: string
+    type: object
   controller.response:
     properties:
       data:
@@ -29,9 +69,38 @@ definitions:
       status:
         type: string
     type: object
+  controller.villageResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.Village'
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  controller.villagesResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Village'
+        type: array
+      message:
+        type: string
+      status:
+        type: string
+    type: object
   echo.HTTPError:
     properties:
       message: {}
+    type: object
+  model.District:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      regency:
+        $ref: '#/definitions/model.Regency'
     type: object
   model.Province:
     properties:
@@ -40,11 +109,29 @@ definitions:
       name:
         type: string
     type: object
-host: localhost
+  model.Regency:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      province:
+        $ref: '#/definitions/model.Province'
+    type: object
+  model.Village:
+    properties:
+      district:
+        $ref: '#/definitions/model.District'
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+host: ponorogo-api.herokuapp.com
 info:
   contact:
-    email: support@swagger.io
-    name: API Support
+    email: erikriosetiawan15@gmail.com
+    name: Erik Rio Setiawan
     url: http://www.swagger.io/support
   description: API for Administrative Subdivisions of Ponorogo Regency (Districts
     and Villages).
@@ -70,6 +157,108 @@ paths:
       summary: Check the API Connectivity
       tags:
       - home
+  /api/v1/districts:
+    get:
+      consumes:
+      - application/json
+      description: Get districts
+      parameters:
+      - description: district name search by keyword
+        in: query
+        name: keyword
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.districtsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get Districts
+      tags:
+      - districts
+  /api/v1/districts/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get districts by ID
+      parameters:
+      - description: District ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.districtResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get District by ID
+      tags:
+      - districts
+  /api/v1/districts/{id}/villages:
+    get:
+      consumes:
+      - application/json
+      description: Get villages by district ID
+      parameters:
+      - description: District ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.villagesResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get Villages by District ID
+      tags:
+      - districts
+  /api/v1/districts/villages:
+    get:
+      consumes:
+      - application/json
+      description: Get villages by district name
+      parameters:
+      - description: district name search by keyword
+        in: query
+        name: keyword
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.villagesResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get Villages by District Name
+      tags:
+      - districts
   /api/v1/provinces:
     get:
       consumes:
@@ -123,4 +312,110 @@ paths:
       summary: Get Province by ID
       tags:
       - provinces
+  /api/v1/regencies:
+    get:
+      consumes:
+      - application/json
+      description: Get regencies
+      parameters:
+      - description: regency name search by keyword
+        in: query
+        name: keyword
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.regenciesResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get Regencies
+      tags:
+      - regencies
+  /api/v1/regencies/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get regencies by ID
+      parameters:
+      - description: Regency ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.regencyResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get Regency by ID
+      tags:
+      - regencies
+  /api/v1/villages:
+    get:
+      consumes:
+      - application/json
+      description: Get villages
+      parameters:
+      - description: village name search by keyword
+        in: query
+        name: keyword
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.villagesResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get Villages
+      tags:
+      - villages
+  /api/v1/villages/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get villages by ID
+      parameters:
+      - description: Village ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.villageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Get Village by ID
+      tags:
+      - villages
 swagger: "2.0"
