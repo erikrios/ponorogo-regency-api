@@ -46,11 +46,18 @@ func main() {
 	port := fmt.Sprintf(":%s", os.Getenv("PORT"))
 
 	provinceRepository := repository.NewProvinceRepositoryImpl(db)
+	regencyRepository := repository.NewRegencyRepositoryImpl(db)
+	districtRepository := repository.NewDistrictRepositoryImpl(db)
+	villageRepository := repository.NewVillageRepositoryImpl(db)
 
 	provinceService := service.NewProvinceServiceImpl(provinceRepository)
+	regencyService := service.NewRegencyServiceImpl(regencyRepository)
+	districtService := service.NewDistrictServiceImpl(districtRepository, villageRepository)
 
 	homeController := controller.NewHomeController()
 	provincesController := controller.NewProvincesController(provinceService)
+	regenciesController := controller.NewRegenciesController(regencyService)
+	districtsController := controller.NewDistrictsController(districtService)
 
 	e := echo.New()
 
@@ -71,6 +78,8 @@ func main() {
 
 	g := e.Group("/api/v1")
 	provincesController.Route(g)
+	regenciesController.Route(g)
+	districtsController.Route(g)
 
 	e.Logger.Fatal(e.Start(port))
 }
