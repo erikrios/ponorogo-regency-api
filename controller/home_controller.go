@@ -14,7 +14,7 @@ func NewHomeController() *HomeController {
 }
 
 func (h *HomeController) Route(e *echo.Echo) {
-	e.GET("/", h.GetHello)
+	e.GET("/", h.getHello)
 }
 
 // GetHello godoc
@@ -23,9 +23,9 @@ func (h *HomeController) Route(e *echo.Echo) {
 // @Tags         home
 // @Accept       json
 // @Produce      json
-// @Success      200  {object} response
+// @Success      200  {object}  response
 // @Router       / [get]
-func (h *HomeController) GetHello(c echo.Context) error {
+func (h *HomeController) getHello(c echo.Context) error {
 	data := "Hello, World"
 	return c.JSON(http.StatusOK, model.NewResponse("success", "successfully get message", &data))
 }
@@ -35,9 +35,4 @@ type response struct {
 	Status  string `json:"status"`
 	Message string `json:"message"`
 	Data    string `json:"data"`
-}
-
-// errorResponse struct used for swaggo to generate the API documentation, as it doesn't support generic yet.
-type errorResponse struct {
-	Message string `json:"message"`
 }
