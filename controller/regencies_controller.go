@@ -65,7 +65,7 @@ func (r *regenciesController) getByID(c echo.Context) error {
 		return newErrorResponse(err)
 	}
 
-	response := model.NewResponse("success", fmt.Sprintf("successfully get province with ID %s", id), regency)
+	response := model.NewResponse("success", fmt.Sprintf("successfully get regency with ID %s", id), regency)
 	return c.JSON(http.StatusOK, response)
 }
 
