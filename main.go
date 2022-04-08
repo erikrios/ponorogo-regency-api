@@ -21,15 +21,15 @@ import (
 // @description     API for Administrative Subdivisions of Ponorogo Regency (Districts and Villages).
 // @termsOfService  http://swagger.io/terms/
 
-// @contact.name   API Support
+// @contact.name   Erik Rio Setiawan
 // @contact.url    http://www.swagger.io/support
-// @contact.email  support@swagger.io
+// @contact.email  erikriosetiawan15@gmail.com
 
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost
-// @BasePath  /v1
+// @host      ponorogo-api.herokuapp.com
+// @BasePath  /
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	if err := godotenv.Load(".env"); err != nil {
@@ -53,11 +53,13 @@ func main() {
 	provinceService := service.NewProvinceServiceImpl(provinceRepository)
 	regencyService := service.NewRegencyServiceImpl(regencyRepository)
 	districtService := service.NewDistrictServiceImpl(districtRepository, villageRepository)
+	villageService := service.NewVillageServiceImpl(villageRepository)
 
 	homeController := controller.NewHomeController()
 	provincesController := controller.NewProvincesController(provinceService)
 	regenciesController := controller.NewRegenciesController(regencyService)
 	districtsController := controller.NewDistrictsController(districtService)
+	villagesController := controller.NewVillagesController(villageService)
 
 	e := echo.New()
 
@@ -80,6 +82,7 @@ func main() {
 	provincesController.Route(g)
 	regenciesController.Route(g)
 	districtsController.Route(g)
+	villagesController.Route(g)
 
 	e.Logger.Fatal(e.Start(port))
 }
