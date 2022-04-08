@@ -30,9 +30,14 @@ func (h *HomeController) GetHello(c echo.Context) error {
 	return c.JSON(http.StatusOK, model.NewResponse("success", "successfully get message", &data))
 }
 
-// This struct used for swaggo to generate the API documentation, as it doesn't support generic yet.
+// response struct used for swaggo to generate the API documentation, as it doesn't support generic yet.
 type response struct {
 	Status  string `json:"status"`
 	Message string `json:"message"`
 	Data    string `json:"data"`
+}
+
+// errorResponse struct used for swaggo to generate the API documentation, as it doesn't support generic yet.
+type errorResponse struct {
+	Message string `json:"message"`
 }
