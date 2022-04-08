@@ -31,7 +31,7 @@
   <p align="center">
     API for Administrative Subdivisions of Ponorogo Regency (Districts and Villages)
     <br />
-    <a href="https://ponorogo-api.herokuapp.com/swagger/"><strong>Explore the docs »</strong></a>
+    <a href="https://ponorogo-api.herokuapp.com/swagger/swagger/index.html"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://ponorogo-api.herokuapp.com">View Demo</a>
@@ -71,7 +71,6 @@
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
-
 
 There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I
 created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I
@@ -113,7 +112,7 @@ This is an example of how to list things you need to use the software and how to
 
 - Go
   ```sh
-  sudo apt install golang 
+  sudo apt install golang
   ```
 
 ### Installation
@@ -163,8 +162,8 @@ _For more examples, please refer to the [Documentation](https://ponorogo-api.her
 - [ ] Add Additional Templates w/ Examples
 - [ ] Add "components" document to easily copy & paste sections of the readme
 - [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
+  - [ ] Chinese
+  - [ ] Spanish
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (
 and known issues).
@@ -229,27 +228,15 @@ to kick things off!
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 [contributors-shield]: https://img.shields.io/github/contributors/erikrios/ponorogo-regency-api.svg?style=for-the-badge
-
 [contributors-url]: https://github.com/erikrios/ponorogo-regency-api/graphs/contributors
-
 [forks-shield]: https://img.shields.io/github/forks/erikrios/ponorogo-regency-api.svg?style=for-the-badge
-
 [forks-url]: https://github.com/erikrios/ponorogo-regency-api/network/members
-
 [stars-shield]: https://img.shields.io/github/stars/erikrios/ponorogo-regency-api.svg?style=for-the-badge
-
 [stars-url]: https://github.com/erikrios/ponorogo-regency-api/stargazers
-
 [issues-shield]: https://img.shields.io/github/issues/erikrios/ponorogo-regency-api.svg?style=for-the-badge
-
 [issues-url]: https://github.com/erikrios/ponorogo-regency-api/issues
-
 [license-shield]: https://img.shields.io/github/license/erikrios/ponorogo-regency-api.svg?style=for-the-badge
-
 [license-url]: https://github.com/erikrios/ponorogo-regency-api/blob/master/LICENSE.txt
-
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-
 [linkedin-url]: https://linkedin.com/in/erikriosetiawan
-
 [product-screenshot]: images/screenshot.png
