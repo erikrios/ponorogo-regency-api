@@ -141,62 +141,63 @@ func TestDistrictRepositoryImpl(t *testing.T) {
 		})
 	})
 
-	t.Run("TestFindByName", func(t *testing.T) {})
+	t.Run("TestFindByName", func(t *testing.T) {
 
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer db.Close()
-
-	expectedDistricts := []entity.District{
-		{
-			ID:   "32010001",
-			Name: "Bungkal",
-			Regency: entity.Regency{
-				ID:   "3201",
-				Name: "Kabupaten Ponorogo",
-				Province: entity.Province{
-					ID:   "32",
-					Name: "Jawa Timur",
-				},
-			},
-		},
-	}
-
-	returnedRows := sqlmock.NewRows([]string{"id", "name", "regency_id", "regency_name", "province_id", "province_name"})
-	for _, district := range expectedDistricts {
-		returnedRows.AddRow(district.ID, district.Name, district.Regency.ID, district.Regency.Name, district.Regency.Province.ID, district.Regency.Province.Name)
-	}
-
-	t.Run("it should return valid districts, when database successfully return the data", func(t *testing.T) {
-		mock.ExpectQuery(".*").WithArgs(expectedDistricts[0].Name).WillReturnRows(returnedRows)
-
-		var repo DistrictRepository = NewDistrictRepositoryImpl(db)
-
-		got, err := repo.FindByName(context.Background(), expectedDistricts[0].Name)
+		db, mock, err := sqlmock.New()
 		if err != nil {
 			t.Fatal(err)
 		}
+		defer db.Close()
 
-		if err := mock.ExpectationsWereMet(); err != nil {
-			t.Fatal(err)
+		expectedDistricts := []entity.District{
+			{
+				ID:   "32010001",
+				Name: "Bungkal",
+				Regency: entity.Regency{
+					ID:   "3201",
+					Name: "Kabupaten Ponorogo",
+					Province: entity.Province{
+						ID:   "32",
+						Name: "Jawa Timur",
+					},
+				},
+			},
 		}
 
-		assert.ElementsMatch(t, expectedDistricts, got)
-	})
-
-	t.Run("it should return error, when database return an error", func(t *testing.T) {
-		mock.ExpectQuery(".*").WithArgs(expectedDistricts[0].Name).WillReturnError(ErrDatabase)
-
-		var repo DistrictRepository = NewDistrictRepositoryImpl(db)
-
-		if _, err := repo.FindByName(context.Background(), expectedDistricts[0].Name); assert.Error(t, err) {
-			assert.Equal(t, ErrDatabase, err)
+		returnedRows := sqlmock.NewRows([]string{"id", "name", "regency_id", "regency_name", "province_id", "province_name"})
+		for _, district := range expectedDistricts {
+			returnedRows.AddRow(district.ID, district.Name, district.Regency.ID, district.Regency.Name, district.Regency.Province.ID, district.Regency.Province.Name)
 		}
 
-		if err := mock.ExpectationsWereMet(); err != nil {
-			t.Fatal(err)
-		}
+		t.Run("it should return valid districts, when database successfully return the data", func(t *testing.T) {
+			mock.ExpectQuery(".*").WithArgs(expectedDistricts[0].Name).WillReturnRows(returnedRows)
+
+			var repo DistrictRepository = NewDistrictRepositoryImpl(db)
+
+			got, err := repo.FindByName(context.Background(), expectedDistricts[0].Name)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if err := mock.ExpectationsWereMet(); err != nil {
+				t.Fatal(err)
+			}
+
+			assert.ElementsMatch(t, expectedDistricts, got)
+		})
+
+		t.Run("it should return error, when database return an error", func(t *testing.T) {
+			mock.ExpectQuery(".*").WithArgs(expectedDistricts[0].Name).WillReturnError(ErrDatabase)
+
+			var repo DistrictRepository = NewDistrictRepositoryImpl(db)
+
+			if _, err := repo.FindByName(context.Background(), expectedDistricts[0].Name); assert.Error(t, err) {
+				assert.Equal(t, ErrDatabase, err)
+			}
+
+			if err := mock.ExpectationsWereMet(); err != nil {
+				t.Fatal(err)
+			}
+		})
 	})
 }

@@ -133,58 +133,59 @@ func TestRegencyRepositoryImpl(t *testing.T) {
 		})
 	})
 
-	t.Run("TestFindByName", func(t *testing.T) {})
+	t.Run("TestFindByName", func(t *testing.T) {
 
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer db.Close()
-
-	expectedRegencies := []entity.Regency{
-		{
-			ID:   "3201",
-			Name: "Kabupaten Ponorogo",
-			Province: entity.Province{
-				ID:   "32",
-				Name: "Jawa Timur",
-			},
-		},
-	}
-
-	returnedRows := sqlmock.NewRows([]string{"id", "name", "province_id", "province_name"})
-	for _, regency := range expectedRegencies {
-		returnedRows.AddRow(regency.ID, regency.Name, regency.Province.ID, regency.Province.Name)
-	}
-
-	t.Run("it should return valid regencies, when database successfully return the data", func(t *testing.T) {
-		mock.ExpectQuery(".*").WithArgs(expectedRegencies[0].Name).WillReturnRows(returnedRows)
-
-		var repo RegencyRepository = NewRegencyRepositoryImpl(db)
-
-		got, err := repo.FindByName(context.Background(), expectedRegencies[0].Name)
+		db, mock, err := sqlmock.New()
 		if err != nil {
 			t.Fatal(err)
 		}
+		defer db.Close()
 
-		if err := mock.ExpectationsWereMet(); err != nil {
-			t.Fatal(err)
+		expectedRegencies := []entity.Regency{
+			{
+				ID:   "3201",
+				Name: "Kabupaten Ponorogo",
+				Province: entity.Province{
+					ID:   "32",
+					Name: "Jawa Timur",
+				},
+			},
 		}
 
-		assert.ElementsMatch(t, expectedRegencies, got)
-	})
-
-	t.Run("it should return error, when database return an error", func(t *testing.T) {
-		mock.ExpectQuery(".*").WithArgs(expectedRegencies[0].Name).WillReturnError(ErrDatabase)
-
-		var repo RegencyRepository = NewRegencyRepositoryImpl(db)
-
-		if _, err := repo.FindByName(context.Background(), expectedRegencies[0].Name); assert.Error(t, err) {
-			assert.Equal(t, ErrDatabase, err)
+		returnedRows := sqlmock.NewRows([]string{"id", "name", "province_id", "province_name"})
+		for _, regency := range expectedRegencies {
+			returnedRows.AddRow(regency.ID, regency.Name, regency.Province.ID, regency.Province.Name)
 		}
 
-		if err := mock.ExpectationsWereMet(); err != nil {
-			t.Fatal(err)
-		}
+		t.Run("it should return valid regencies, when database successfully return the data", func(t *testing.T) {
+			mock.ExpectQuery(".*").WithArgs(expectedRegencies[0].Name).WillReturnRows(returnedRows)
+
+			var repo RegencyRepository = NewRegencyRepositoryImpl(db)
+
+			got, err := repo.FindByName(context.Background(), expectedRegencies[0].Name)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if err := mock.ExpectationsWereMet(); err != nil {
+				t.Fatal(err)
+			}
+
+			assert.ElementsMatch(t, expectedRegencies, got)
+		})
+
+		t.Run("it should return error, when database return an error", func(t *testing.T) {
+			mock.ExpectQuery(".*").WithArgs(expectedRegencies[0].Name).WillReturnError(ErrDatabase)
+
+			var repo RegencyRepository = NewRegencyRepositoryImpl(db)
+
+			if _, err := repo.FindByName(context.Background(), expectedRegencies[0].Name); assert.Error(t, err) {
+				assert.Equal(t, ErrDatabase, err)
+			}
+
+			if err := mock.ExpectationsWereMet(); err != nil {
+				t.Fatal(err)
+			}
+		})
 	})
 }
