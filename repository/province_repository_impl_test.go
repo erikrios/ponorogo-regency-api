@@ -40,7 +40,7 @@ func TestProvinceRepositoryImpl(t *testing.T) {
 		}
 
 		t.Run("it should return valid provinces, when database successfully return the data", func(t *testing.T) {
-			mock.ExpectQuery("SELECT p.id, p.name FROM provinces p;").WillReturnRows(returnedRows)
+			mock.ExpectQuery(".*").WillReturnRows(returnedRows)
 
 			var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
 
@@ -57,7 +57,7 @@ func TestProvinceRepositoryImpl(t *testing.T) {
 		})
 
 		t.Run("it should return error, when database return an error", func(t *testing.T) {
-			mock.ExpectQuery("SELECT p.id, p.name FROM provinces p;").WillReturnError(ErrDatabase)
+			mock.ExpectQuery(".*").WillReturnError(ErrDatabase)
 
 			var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
 
@@ -87,7 +87,7 @@ func TestProvinceRepositoryImpl(t *testing.T) {
 		returnedRows.AddRow(expectedProvince.ID, expectedProvince.Name)
 
 		t.Run("it should return valid province, when database successfully return the data", func(t *testing.T) {
-			mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.id = \$1;`).WithArgs(expectedProvince.ID).WillReturnRows(returnedRows)
+			mock.ExpectQuery(".*").WithArgs(expectedProvince.ID).WillReturnRows(returnedRows)
 
 			var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
 
@@ -104,7 +104,7 @@ func TestProvinceRepositoryImpl(t *testing.T) {
 		})
 
 		t.Run("it should return error, when database return an error", func(t *testing.T) {
-			mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.id = \$1;`).WithArgs(expectedProvince.ID).WillReturnError(ErrDatabase)
+			mock.ExpectQuery(".*").WithArgs(expectedProvince.ID).WillReturnError(ErrDatabase)
 
 			var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
 
@@ -118,7 +118,7 @@ func TestProvinceRepositoryImpl(t *testing.T) {
 		})
 
 		t.Run("it should return not found error, when given id not found in the  database", func(t *testing.T) {
-			mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.id = \$1;`).WithArgs(expectedProvince.ID).WillReturnError(sql.ErrNoRows)
+			mock.ExpectQuery(".*").WithArgs(expectedProvince.ID).WillReturnError(sql.ErrNoRows)
 
 			var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
 
@@ -152,7 +152,7 @@ func TestProvinceRepositoryImpl(t *testing.T) {
 			returnedRows.AddRow(province.ID, province.Name)
 		}
 		t.Run("it should return valid provinces, when database successfully return the data", func(t *testing.T) {
-			mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.name ILIKE '%' || \$1 || '%';`).WithArgs(expectedProvinces[0].Name).WillReturnRows(returnedRows)
+			mock.ExpectQuery(".*").WithArgs(expectedProvinces[0].Name).WillReturnRows(returnedRows)
 
 			var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
 
@@ -169,7 +169,7 @@ func TestProvinceRepositoryImpl(t *testing.T) {
 		})
 
 		t.Run("it should return error, when database return an error", func(t *testing.T) {
-			mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.name ILIKE '%' || \$1 || '%';`).WithArgs(expectedProvinces[0].Name).WillReturnError(ErrDatabase)
+			mock.ExpectQuery(".*").WithArgs(expectedProvinces[0].Name).WillReturnError(ErrDatabase)
 
 			var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
 

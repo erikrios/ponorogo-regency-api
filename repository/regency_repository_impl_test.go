@@ -36,7 +36,7 @@ func TestRegencyRepositoryImpl(t *testing.T) {
 		}
 
 		t.Run("it should return valid regencies, when database successfully return the data", func(t *testing.T) {
-			mock.ExpectQuery("SELECT r.id, r.name, r.province_id, p.name AS province_name FROM regencies r INNER JOIN provinces p on r.province_id = p.id;").WillReturnRows(returnedRows)
+			mock.ExpectQuery(".*").WillReturnRows(returnedRows)
 
 			var repo RegencyRepository = NewRegencyRepositoryImpl(db)
 
@@ -53,7 +53,7 @@ func TestRegencyRepositoryImpl(t *testing.T) {
 		})
 
 		t.Run("it should return error, when database return an error", func(t *testing.T) {
-			mock.ExpectQuery("SELECT r.id, r.name, r.province_id, p.name AS province_name FROM regencies r INNER JOIN provinces p on r.province_id = p.id;").WillReturnError(ErrDatabase)
+			mock.ExpectQuery(".*").WillReturnError(ErrDatabase)
 
 			var repo RegencyRepository = NewRegencyRepositoryImpl(db)
 
@@ -88,7 +88,7 @@ func TestRegencyRepositoryImpl(t *testing.T) {
 		returnedRows.AddRow(expectedRegency.ID, expectedRegency.Name, expectedRegency.Province.ID, expectedRegency.Province.Name)
 
 		t.Run("it should return valid regency, when database successfully return the data", func(t *testing.T) {
-			mock.ExpectQuery(`SELECT r.id, r.name, r.province_id, p.name AS province_name FROM regencies r INNER JOIN provinces p on r.province_id = p.id WHERE r.id = \$1;`).WithArgs(expectedRegency.ID).WillReturnRows(returnedRows)
+			mock.ExpectQuery(".*").WithArgs(expectedRegency.ID).WillReturnRows(returnedRows)
 
 			var repo RegencyRepository = NewRegencyRepositoryImpl(db)
 
@@ -105,7 +105,7 @@ func TestRegencyRepositoryImpl(t *testing.T) {
 		})
 
 		t.Run("it should return error, when database return an error", func(t *testing.T) {
-			mock.ExpectQuery(`SELECT r.id, r.name, r.province_id, p.name AS province_name FROM regencies r INNER JOIN provinces p on r.province_id = p.id WHERE r.id = \$1;`).WithArgs(expectedRegency.ID).WillReturnError(ErrDatabase)
+			mock.ExpectQuery(".*").WithArgs(expectedRegency.ID).WillReturnError(ErrDatabase)
 
 			var repo RegencyRepository = NewRegencyRepositoryImpl(db)
 
@@ -119,7 +119,7 @@ func TestRegencyRepositoryImpl(t *testing.T) {
 		})
 
 		t.Run("it should return not found error, when given id not found in the  database", func(t *testing.T) {
-			mock.ExpectQuery(`SELECT r.id, r.name, r.province_id, p.name AS province_name FROM regencies r INNER JOIN provinces p on r.province_id = p.id WHERE r.id = \$1;`).WithArgs(expectedRegency.ID).WillReturnError(sql.ErrNoRows)
+			mock.ExpectQuery(".*").WithArgs(expectedRegency.ID).WillReturnError(sql.ErrNoRows)
 
 			var repo RegencyRepository = NewRegencyRepositoryImpl(db)
 
@@ -158,7 +158,7 @@ func TestRegencyRepositoryImpl(t *testing.T) {
 	}
 
 	t.Run("it should return valid regencies, when database successfully return the data", func(t *testing.T) {
-		mock.ExpectQuery(`SELECT r.id, r.name, r.province_id, p.name AS province_name FROM regencies r INNER JOIN provinces p on r.province_id = p.id WHERE r.name ILIKE '%' || \$1 || '%';`).WithArgs(expectedRegencies[0].Name).WillReturnRows(returnedRows)
+		mock.ExpectQuery(".*").WithArgs(expectedRegencies[0].Name).WillReturnRows(returnedRows)
 
 		var repo RegencyRepository = NewRegencyRepositoryImpl(db)
 
@@ -175,7 +175,7 @@ func TestRegencyRepositoryImpl(t *testing.T) {
 	})
 
 	t.Run("it should return error, when database return an error", func(t *testing.T) {
-		mock.ExpectQuery(`SELECT r.id, r.name, r.province_id, p.name AS province_name FROM regencies r INNER JOIN provinces p on r.province_id = p.id WHERE r.name ILIKE '%' || \$1 || '%';`).WithArgs(expectedRegencies[0].Name).WillReturnError(ErrDatabase)
+		mock.ExpectQuery(".*").WithArgs(expectedRegencies[0].Name).WillReturnError(ErrDatabase)
 
 		var repo RegencyRepository = NewRegencyRepositoryImpl(db)
 
