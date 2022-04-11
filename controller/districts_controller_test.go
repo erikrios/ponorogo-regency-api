@@ -180,9 +180,13 @@ func TestDistrictsController(t *testing.T) {
 						data := response["data"].(map[string]any)
 
 						assert.Equal(t, "success", status)
-						assert.Equal(t, fmt.Sprintf("successfully get district with ID %s", data["id"]), message)
+						assert.Equal(t, fmt.Sprintf("successfully get district with ID %s", dummyDistrict.ID), message)
 						assert.Equal(t, dummyDistrict.ID, data["id"])
 						assert.Equal(t, dummyDistrict.Name, data["name"])
+						assert.Equal(t, dummyDistrict.Regency.ID, data["regency"].(map[string]any)["id"])
+						assert.Equal(t, dummyDistrict.Regency.Name, data["regency"].(map[string]any)["name"])
+						assert.Equal(t, dummyDistrict.Regency.Province.ID, data["regency"].(map[string]any)["province"].(map[string]any)["id"])
+						assert.Equal(t, dummyDistrict.Regency.Province.Name, data["regency"].(map[string]any)["province"].(map[string]any)["name"])
 					}
 				}
 			})
