@@ -29,7 +29,7 @@ import (
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
 // @host      ponorogo-api.herokuapp.com
-// @BasePath  /
+// @BasePath  /api/v1
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	if err := godotenv.Load(".env"); err != nil {
@@ -55,7 +55,6 @@ func main() {
 	districtService := service.NewDistrictServiceImpl(districtRepository, villageRepository)
 	villageService := service.NewVillageServiceImpl(villageRepository)
 
-	homeController := controller.NewHomeController()
 	provincesController := controller.NewProvincesController(provinceService)
 	regenciesController := controller.NewRegenciesController(regencyService)
 	districtsController := controller.NewDistrictsController(districtService)
@@ -75,8 +74,7 @@ func main() {
 		middleware.RemoveTrailingSlash(e)
 	}
 
-	e.GET("/swagger/*", echoSwagger.WrapHandler)
-	homeController.Route(e)
+	e.GET("/*", echoSwagger.WrapHandler)
 
 	g := e.Group("/api/v1")
 	provincesController.Route(g)

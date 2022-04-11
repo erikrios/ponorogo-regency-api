@@ -18,164 +18,168 @@ func init() {
 	}
 }
 
-func TestFindAll(t *testing.T) {
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer db.Close()
+func TestProvinceRepositoryImpl(t *testing.T) {
 
-	expectedProvinces := []entity.Province{
-		{
+	t.Run("TestFindAll", func(t *testing.T) {
+		db, mock, err := sqlmock.New()
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer db.Close()
+
+		expectedProvinces := []entity.Province{
+			{
+				ID:   "32",
+				Name: "Jawa Timur",
+			},
+		}
+
+		returnedRows := sqlmock.NewRows([]string{"id", "name"})
+		for _, province := range expectedProvinces {
+			returnedRows.AddRow(province.ID, province.Name)
+		}
+
+		t.Run("it should return valid provinces, when database successfully return the data", func(t *testing.T) {
+			mock.ExpectQuery(".*").WillReturnRows(returnedRows)
+
+			var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
+
+			got, err := repo.FindAll(context.Background())
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if err := mock.ExpectationsWereMet(); err != nil {
+				t.Fatal(err)
+			}
+
+			assert.ElementsMatch(t, expectedProvinces, got)
+		})
+
+		t.Run("it should return error, when database return an error", func(t *testing.T) {
+			mock.ExpectQuery(".*").WillReturnError(ErrDatabase)
+
+			var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
+
+			if _, err := repo.FindAll(context.Background()); assert.Error(t, err) {
+				assert.Equal(t, ErrDatabase, err)
+			}
+
+			if err := mock.ExpectationsWereMet(); err != nil {
+				t.Fatal(err)
+			}
+		})
+	})
+
+	t.Run("TestFindByID", func(t *testing.T) {
+		db, mock, err := sqlmock.New()
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer db.Close()
+
+		expectedProvince := entity.Province{
 			ID:   "32",
 			Name: "Jawa Timur",
-		},
-	}
+		}
 
-	returnedRows := sqlmock.NewRows([]string{"id", "name"})
-	for _, province := range expectedProvinces {
-		returnedRows.AddRow(province.ID, province.Name)
-	}
+		returnedRows := sqlmock.NewRows([]string{"id", "name"})
+		returnedRows.AddRow(expectedProvince.ID, expectedProvince.Name)
 
-	t.Run("it should return valid provinces, when database successfully return the data", func(t *testing.T) {
-		mock.ExpectQuery("SELECT p.id, p.name FROM provinces p;").WillReturnRows(returnedRows)
+		t.Run("it should return valid province, when database successfully return the data", func(t *testing.T) {
+			mock.ExpectQuery(".*").WithArgs(expectedProvince.ID).WillReturnRows(returnedRows)
 
-		var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
+			var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
 
-		got, err := repo.FindAll(context.Background())
+			got, err := repo.FindByID(context.Background(), expectedProvince.ID)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if err := mock.ExpectationsWereMet(); err != nil {
+				t.Fatal(err)
+			}
+
+			assert.Equal(t, expectedProvince, got)
+		})
+
+		t.Run("it should return error, when database return an error", func(t *testing.T) {
+			mock.ExpectQuery(".*").WithArgs(expectedProvince.ID).WillReturnError(ErrDatabase)
+
+			var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
+
+			if _, err := repo.FindByID(context.Background(), expectedProvince.ID); assert.Error(t, err) {
+				assert.Equal(t, ErrDatabase, err)
+			}
+
+			if err := mock.ExpectationsWereMet(); err != nil {
+				t.Fatal(err)
+			}
+		})
+
+		t.Run("it should return not found error, when given id not found in the  database", func(t *testing.T) {
+			mock.ExpectQuery(".*").WithArgs(expectedProvince.ID).WillReturnError(sql.ErrNoRows)
+
+			var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
+
+			if _, err := repo.FindByID(context.Background(), expectedProvince.ID); assert.Error(t, err) {
+				assert.Equal(t, ErrQueryNotFound, err)
+			}
+
+			if err := mock.ExpectationsWereMet(); err != nil {
+				t.Fatal(err)
+			}
+		})
+	})
+
+	t.Run("TestFindByName", func(t *testing.T) {
+
+		db, mock, err := sqlmock.New()
 		if err != nil {
 			t.Fatal(err)
 		}
+		defer db.Close()
 
-		if err := mock.ExpectationsWereMet(); err != nil {
-			t.Fatal(err)
+		expectedProvinces := []entity.Province{
+			{
+				ID:   "32",
+				Name: "Jawa Timur",
+			},
 		}
 
-		assert.ElementsMatch(t, expectedProvinces, got)
-	})
-
-	t.Run("it should return error, when database return an error", func(t *testing.T) {
-		mock.ExpectQuery("SELECT p.id, p.name FROM provinces p;").WillReturnError(ErrDatabase)
-
-		var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
-
-		if _, err := repo.FindAll(context.Background()); assert.Error(t, err) {
-			assert.Equal(t, ErrDatabase, err)
+		returnedRows := sqlmock.NewRows([]string{"id", "name"})
+		for _, province := range expectedProvinces {
+			returnedRows.AddRow(province.ID, province.Name)
 		}
+		t.Run("it should return valid provinces, when database successfully return the data", func(t *testing.T) {
+			mock.ExpectQuery(".*").WithArgs(expectedProvinces[0].Name).WillReturnRows(returnedRows)
 
-		if err := mock.ExpectationsWereMet(); err != nil {
-			t.Fatal(err)
-		}
-	})
-}
+			var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
 
-func TestFindByID(t *testing.T) {
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer db.Close()
+			got, err := repo.FindByName(context.Background(), expectedProvinces[0].Name)
+			if err != nil {
+				t.Fatal(err)
+			}
 
-	expectedProvince := entity.Province{
-		ID:   "32",
-		Name: "Jawa Timur",
-	}
+			if err := mock.ExpectationsWereMet(); err != nil {
+				t.Fatal(err)
+			}
 
-	returnedRows := sqlmock.NewRows([]string{"id", "name"})
-	returnedRows.AddRow(expectedProvince.ID, expectedProvince.Name)
+			assert.ElementsMatch(t, expectedProvinces, got)
+		})
 
-	t.Run("it should return valid province, when database successfully return the data", func(t *testing.T) {
-		mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.id = \$1;`).WithArgs(expectedProvince.ID).WillReturnRows(returnedRows)
+		t.Run("it should return error, when database return an error", func(t *testing.T) {
+			mock.ExpectQuery(".*").WithArgs(expectedProvinces[0].Name).WillReturnError(ErrDatabase)
 
-		var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
+			var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
 
-		got, err := repo.FindByID(context.Background(), expectedProvince.ID)
-		if err != nil {
-			t.Fatal(err)
-		}
+			if _, err := repo.FindByName(context.Background(), expectedProvinces[0].Name); assert.Error(t, err) {
+				assert.Equal(t, ErrDatabase, err)
+			}
 
-		if err := mock.ExpectationsWereMet(); err != nil {
-			t.Fatal(err)
-		}
-
-		assert.Equal(t, expectedProvince, got)
-	})
-
-	t.Run("it should return error, when database return an error", func(t *testing.T) {
-		mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.id = \$1;`).WithArgs(expectedProvince.ID).WillReturnError(ErrDatabase)
-
-		var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
-
-		if _, err := repo.FindByID(context.Background(), expectedProvince.ID); assert.Error(t, err) {
-			assert.Equal(t, ErrDatabase, err)
-		}
-
-		if err := mock.ExpectationsWereMet(); err != nil {
-			t.Fatal(err)
-		}
-	})
-
-	t.Run("it should return not found error, when given id not found in the  database", func(t *testing.T) {
-		mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.id = \$1;`).WithArgs(expectedProvince.ID).WillReturnError(sql.ErrNoRows)
-
-		var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
-
-		if _, err := repo.FindByID(context.Background(), expectedProvince.ID); assert.Error(t, err) {
-			assert.Equal(t, ErrQueryNotFound, err)
-		}
-
-		if err := mock.ExpectationsWereMet(); err != nil {
-			t.Fatal(err)
-		}
-	})
-}
-
-func TestFindByName(t *testing.T) {
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer db.Close()
-
-	expectedProvinces := []entity.Province{
-		{
-			ID:   "32",
-			Name: "Jawa Timur",
-		},
-	}
-
-	returnedRows := sqlmock.NewRows([]string{"id", "name"})
-	for _, province := range expectedProvinces {
-		returnedRows.AddRow(province.ID, province.Name)
-	}
-	t.Run("it should return valid provinces, when database successfully return the data", func(t *testing.T) {
-		mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.name ILIKE '%' || \$1 || '%';`).WithArgs(expectedProvinces[0].Name).WillReturnRows(returnedRows)
-
-		var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
-
-		got, err := repo.FindByName(context.Background(), expectedProvinces[0].Name)
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		if err := mock.ExpectationsWereMet(); err != nil {
-			t.Fatal(err)
-		}
-
-		assert.ElementsMatch(t, expectedProvinces, got)
-	})
-
-	t.Run("it should return error, when database return an error", func(t *testing.T) {
-		mock.ExpectQuery(`SELECT p.id, p.name FROM provinces p WHERE p.name ILIKE '%' || \$1 || '%';`).WithArgs(expectedProvinces[0].Name).WillReturnError(ErrDatabase)
-
-		var repo ProvinceRepository = NewProvinceRepositoryImpl(db)
-
-		if _, err := repo.FindByName(context.Background(), expectedProvinces[0].Name); assert.Error(t, err) {
-			assert.Equal(t, ErrDatabase, err)
-		}
-
-		if err := mock.ExpectationsWereMet(); err != nil {
-			t.Fatal(err)
-		}
+			if err := mock.ExpectationsWereMet(); err != nil {
+				t.Fatal(err)
+			}
+		})
 	})
 }

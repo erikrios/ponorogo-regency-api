@@ -16,32 +16,9 @@
         "version": "1.0"
     },
     "host": "ponorogo-api.herokuapp.com",
-    "basePath": "/",
+    "basePath": "/api/v1",
     "paths": {
-        "/": {
-            "get": {
-                "description": "Show the hello message",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "home"
-                ],
-                "summary": "Check the API Connectivity",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controller.response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/districts": {
+        "/districts": {
             "get": {
                 "description": "Get districts",
                 "consumes": [
@@ -78,7 +55,7 @@
                 }
             }
         },
-        "/api/v1/districts/villages": {
+        "/districts/villages": {
             "get": {
                 "description": "Get villages by district name",
                 "consumes": [
@@ -115,7 +92,7 @@
                 }
             }
         },
-        "/api/v1/districts/{id}": {
+        "/districts/{id}": {
             "get": {
                 "description": "get districts by ID",
                 "consumes": [
@@ -159,7 +136,7 @@
                 }
             }
         },
-        "/api/v1/districts/{id}/villages": {
+        "/districts/{id}/villages": {
             "get": {
                 "description": "Get villages by district ID",
                 "consumes": [
@@ -197,7 +174,7 @@
                 }
             }
         },
-        "/api/v1/provinces": {
+        "/provinces": {
             "get": {
                 "description": "Get provinces",
                 "consumes": [
@@ -234,7 +211,7 @@
                 }
             }
         },
-        "/api/v1/provinces/{id}": {
+        "/provinces/{id}": {
             "get": {
                 "description": "get provinces by ID",
                 "consumes": [
@@ -278,7 +255,7 @@
                 }
             }
         },
-        "/api/v1/regencies": {
+        "/regencies": {
             "get": {
                 "description": "Get regencies",
                 "consumes": [
@@ -315,7 +292,7 @@
                 }
             }
         },
-        "/api/v1/regencies/{id}": {
+        "/regencies/{id}": {
             "get": {
                 "description": "get regencies by ID",
                 "consumes": [
@@ -359,7 +336,7 @@
                 }
             }
         },
-        "/api/v1/villages": {
+        "/villages": {
             "get": {
                 "description": "Get villages",
                 "consumes": [
@@ -396,7 +373,7 @@
                 }
             }
         },
-        "/api/v1/villages/{id}": {
+        "/villages/{id}": {
             "get": {
                 "description": "get villages by ID",
                 "consumes": [
@@ -526,20 +503,6 @@
             "properties": {
                 "data": {
                     "$ref": "#/definitions/model.Regency"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "controller.response": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "string"
                 },
                 "message": {
                     "type": "string"
