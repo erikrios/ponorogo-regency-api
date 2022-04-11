@@ -33,7 +33,7 @@
   <p align="center">
     API for Administrative Subdivisions of Ponorogo Regency (Districts and Villages)
     <br />
-    <a href="https://ponorogo-api.herokuapp.com/swagger/swagger/index.html"><strong>Explore the docs »</strong></a>
+    <a href="https://ponorogo-api.herokuapp.com/"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://ponorogo-api.herokuapp.com">View Demo</a>
