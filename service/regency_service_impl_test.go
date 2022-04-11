@@ -234,14 +234,7 @@ func mapToRegenciesModel(entities []entity.Regency) []model.Regency {
 	regencies := make([]model.Regency, len(entities))
 
 	for i, e := range entities {
-		regencies[i] = model.Regency{
-			ID:   e.ID,
-			Name: e.Name,
-			Province: model.Province{
-				ID:   e.Province.ID,
-				Name: e.Province.Name,
-			},
-		}
+		regencies[i] = mapToRegencyModel(e)
 	}
 
 	return regencies
