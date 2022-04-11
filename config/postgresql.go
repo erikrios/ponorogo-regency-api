@@ -20,10 +20,18 @@ func NewPostgreSQLDatabase() (*sql.DB, error) {
 	password := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
 
-	psqlInfo := fmt.Sprintf(
-		"host=%s port=%d user=%s password=%s dbname=%s",
-		host, port, user, password, dbName,
-	)
+	var psqlInfo string
+	if os.Getenv("ENV") == "production" {
+		psqlInfo = fmt.Sprintf(
+			"host=%s port=%d user=%s password=%s dbname=%s",
+			host, port, user, password, dbName,
+		)
+	} else {
+		psqlInfo = fmt.Sprintf(
+			"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+			host, port, user, password, dbName,
+		)
+	}
 
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
