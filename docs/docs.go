@@ -25,30 +25,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/": {
-            "get": {
-                "description": "Show the hello message",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "home"
-                ],
-                "summary": "Check the API Connectivity",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controller.response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/districts": {
+        "/districts": {
             "get": {
                 "description": "Get districts",
                 "consumes": [
@@ -85,7 +62,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/districts/villages": {
+        "/districts/villages": {
             "get": {
                 "description": "Get villages by district name",
                 "consumes": [
@@ -122,7 +99,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/districts/{id}": {
+        "/districts/{id}": {
             "get": {
                 "description": "get districts by ID",
                 "consumes": [
@@ -166,7 +143,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/districts/{id}/villages": {
+        "/districts/{id}/villages": {
             "get": {
                 "description": "Get villages by district ID",
                 "consumes": [
@@ -204,7 +181,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/provinces": {
+        "/provinces": {
             "get": {
                 "description": "Get provinces",
                 "consumes": [
@@ -241,7 +218,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/provinces/{id}": {
+        "/provinces/{id}": {
             "get": {
                 "description": "get provinces by ID",
                 "consumes": [
@@ -285,7 +262,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/regencies": {
+        "/regencies": {
             "get": {
                 "description": "Get regencies",
                 "consumes": [
@@ -322,7 +299,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/regencies/{id}": {
+        "/regencies/{id}": {
             "get": {
                 "description": "get regencies by ID",
                 "consumes": [
@@ -366,7 +343,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/villages": {
+        "/villages": {
             "get": {
                 "description": "Get villages",
                 "consumes": [
@@ -403,7 +380,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/villages/{id}": {
+        "/villages/{id}": {
             "get": {
                 "description": "get villages by ID",
                 "consumes": [
@@ -542,20 +519,6 @@ const docTemplate = `{
                 }
             }
         },
-        "controller.response": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "string"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
         "controller.villageResponse": {
             "type": "object",
             "properties": {
@@ -653,7 +616,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "ponorogo-api.herokuapp.com",
-	BasePath:         "/",
+	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Ponorogo Regency API",
 	Description:      "API for Administrative Subdivisions of Ponorogo Regency (Districts and Villages).",

@@ -1,4 +1,4 @@
-basePath: /
+basePath: /api/v1
 definitions:
   controller.districtResponse:
     properties:
@@ -55,15 +55,6 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/model.Regency'
-      message:
-        type: string
-      status:
-        type: string
-    type: object
-  controller.response:
-    properties:
-      data:
-        type: string
       message:
         type: string
       status:
@@ -142,22 +133,7 @@ info:
   title: Ponorogo Regency API
   version: "1.0"
 paths:
-  /:
-    get:
-      consumes:
-      - application/json
-      description: Show the hello message
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/controller.response'
-      summary: Check the API Connectivity
-      tags:
-      - home
-  /api/v1/districts:
+  /districts:
     get:
       consumes:
       - application/json
@@ -181,7 +157,7 @@ paths:
       summary: Get Districts
       tags:
       - districts
-  /api/v1/districts/{id}:
+  /districts/{id}:
     get:
       consumes:
       - application/json
@@ -210,7 +186,7 @@ paths:
       summary: Get District by ID
       tags:
       - districts
-  /api/v1/districts/{id}/villages:
+  /districts/{id}/villages:
     get:
       consumes:
       - application/json
@@ -235,7 +211,7 @@ paths:
       summary: Get Villages by District ID
       tags:
       - districts
-  /api/v1/districts/villages:
+  /districts/villages:
     get:
       consumes:
       - application/json
@@ -259,7 +235,7 @@ paths:
       summary: Get Villages by District Name
       tags:
       - districts
-  /api/v1/provinces:
+  /provinces:
     get:
       consumes:
       - application/json
@@ -283,7 +259,7 @@ paths:
       summary: Get Provinces
       tags:
       - provinces
-  /api/v1/provinces/{id}:
+  /provinces/{id}:
     get:
       consumes:
       - application/json
@@ -312,7 +288,7 @@ paths:
       summary: Get Province by ID
       tags:
       - provinces
-  /api/v1/regencies:
+  /regencies:
     get:
       consumes:
       - application/json
@@ -336,7 +312,7 @@ paths:
       summary: Get Regencies
       tags:
       - regencies
-  /api/v1/regencies/{id}:
+  /regencies/{id}:
     get:
       consumes:
       - application/json
@@ -365,7 +341,7 @@ paths:
       summary: Get Regency by ID
       tags:
       - regencies
-  /api/v1/villages:
+  /villages:
     get:
       consumes:
       - application/json
@@ -389,7 +365,7 @@ paths:
       summary: Get Villages
       tags:
       - villages
-  /api/v1/villages/{id}:
+  /villages/{id}:
     get:
       consumes:
       - application/json
