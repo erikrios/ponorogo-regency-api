@@ -78,12 +78,16 @@ func TestRegenciesController(t *testing.T) {
 						assert.Equal(t, "successfully get regencies", message)
 						assert.Equal(t, len(dummyRegencies), len(data))
 
-						for i, province := range dummyRegencies {
+						for i, regency := range dummyRegencies {
 							gotRegency := data[i].(map[string]any)
 							gotRegencyID := gotRegency["id"].(string)
 							gotRegencyName := gotRegency["name"].(string)
-							assert.Equal(t, province.ID, gotRegencyID)
-							assert.Equal(t, province.Name, gotRegencyName)
+							gotProvinceID := gotRegency["province"].(map[string]any)["id"]
+							gotProvinceName := gotRegency["province"].(map[string]any)["name"]
+							assert.Equal(t, regency.ID, gotRegencyID)
+							assert.Equal(t, regency.Name, gotRegencyName)
+							assert.Equal(t, regency.Province.ID, gotProvinceID)
+							assert.Equal(t, regency.Province.Name, gotProvinceName)
 						}
 					}
 				}
@@ -167,6 +171,8 @@ func TestRegenciesController(t *testing.T) {
 						assert.Equal(t, fmt.Sprintf("successfully get regency with ID %s", data["id"]), message)
 						assert.Equal(t, dummyRegency.ID, data["id"])
 						assert.Equal(t, dummyRegency.Name, data["name"])
+						assert.Equal(t, dummyRegency.Province.ID, data["province"].(map[string]any)["id"])
+						assert.Equal(t, dummyRegency.Province.Name, data["province"].(map[string]any)["name"])
 					}
 				}
 			})
