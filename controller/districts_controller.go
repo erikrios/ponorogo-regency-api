@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 
@@ -26,7 +25,7 @@ func (d *districtsController) Route(g *echo.Group) {
 	group.GET("/villages", d.getVillagesByDistrictName)
 }
 
-// GetAll	     godoc
+// GetAll	       godoc
 // @Summary      Get Districts
 // @Description  Get districts
 // @Tags         districts
@@ -35,11 +34,11 @@ func (d *districtsController) Route(g *echo.Group) {
 // @Param        keyword  query     string  false  "district name search by keyword"
 // @Success      200      {object}  districtsResponse
 // @Failure      500  {object}  echo.HTTPError
-// @Router       /api/v1/districts [get]
+// @Router       /districts [get]
 func (d *districtsController) getAll(c echo.Context) error {
 	keyword := c.QueryParam("keyword")
 
-	districts, err := d.service.GetAll(context.Background(), keyword)
+	districts, err := d.service.GetAll(c.Request().Context(), keyword)
 	if err != nil {
 		return newErrorResponse(err)
 	}
@@ -58,11 +57,11 @@ func (d *districtsController) getAll(c echo.Context) error {
 // @Success      200  {object}  districtResponse
 // @Failure      404  {object}  echo.HTTPError
 // @Failure      500  {object}  echo.HTTPError
-// @Router       /api/v1/districts/{id} [get]
+// @Router       /districts/{id} [get]
 func (p *districtsController) getByID(c echo.Context) error {
 	id := c.Param("id")
 
-	district, err := p.service.GetByID(context.Background(), id)
+	district, err := p.service.GetByID(c.Request().Context(), id)
 	if err != nil {
 		return newErrorResponse(err)
 	}
@@ -80,11 +79,11 @@ func (p *districtsController) getByID(c echo.Context) error {
 // @Param        id   path      int  true  "District ID"
 // @Success      200  {object}  villagesResponse
 // @Failure      500      {object}  echo.HTTPError
-// @Router       /api/v1/districts/{id}/villages [get]
+// @Router       /districts/{id}/villages [get]
 func (p *districtsController) getVillagesByDistrictID(c echo.Context) error {
 	id := c.Param("id")
 
-	villages, err := p.service.GetVillagesByDistrictID(context.Background(), id)
+	villages, err := p.service.GetVillagesByDistrictID(c.Request().Context(), id)
 	if err != nil {
 		return newErrorResponse(err)
 	}
@@ -102,11 +101,11 @@ func (p *districtsController) getVillagesByDistrictID(c echo.Context) error {
 // @Param        keyword  query     string  false  "district name search by keyword"
 // @Success      200      {object}  villagesResponse
 // @Failure      500      {object}  echo.HTTPError
-// @Router       /api/v1/districts/villages [get]
+// @Router       /districts/villages [get]
 func (p *districtsController) getVillagesByDistrictName(c echo.Context) error {
 	keyword := c.QueryParam("keyword")
 
-	villages, err := p.service.GetVillagesByDistrictName(context.Background(), keyword)
+	villages, err := p.service.GetVillagesByDistrictName(c.Request().Context(), keyword)
 	if err != nil {
 		return newErrorResponse(err)
 	}

@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 
@@ -24,7 +23,7 @@ func (p *provincesController) Route(g *echo.Group) {
 	group.GET("/:id", p.getByID)
 }
 
-// GetAll	     godoc
+// GetAll	       godoc
 // @Summary      Get Provinces
 // @Description  Get provinces
 // @Tags         provinces
@@ -33,11 +32,11 @@ func (p *provincesController) Route(g *echo.Group) {
 // @Param        keyword  query     string  false  "province name search by keyword"
 // @Success      200      {object}  provincesResponse
 // @Failure      500      {object}  echo.HTTPError
-// @Router       /api/v1/provinces [get]
+// @Router       /provinces [get]
 func (p *provincesController) getAll(c echo.Context) error {
 	keyword := c.QueryParam("keyword")
 
-	provinces, err := p.service.GetAll(context.Background(), keyword)
+	provinces, err := p.service.GetAll(c.Request().Context(), keyword)
 	if err != nil {
 		return newErrorResponse(err)
 	}
@@ -56,11 +55,11 @@ func (p *provincesController) getAll(c echo.Context) error {
 // @Success      200  {object}  provinceResponse
 // @Failure      404  {object}  echo.HTTPError
 // @Failure      500  {object}  echo.HTTPError
-// @Router       /api/v1/provinces/{id} [get]
+// @Router       /provinces/{id} [get]
 func (p *provincesController) getByID(c echo.Context) error {
 	id := c.Param("id")
 
-	province, err := p.service.GetByID(context.Background(), id)
+	province, err := p.service.GetByID(c.Request().Context(), id)
 	if err != nil {
 		return newErrorResponse(err)
 	}

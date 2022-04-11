@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 
@@ -24,7 +23,7 @@ func (v *villagesController) Route(g *echo.Group) {
 	group.GET("/:id", v.getByID)
 }
 
-// GetAll	     godoc
+// GetAll	       godoc
 // @Summary      Get Villages
 // @Description  Get villages
 // @Tags         villages
@@ -33,11 +32,11 @@ func (v *villagesController) Route(g *echo.Group) {
 // @Param        keyword  query     string  false  "village name search by keyword"
 // @Success      200      {object}  villagesResponse
 // @Failure      500      {object}  echo.HTTPError
-// @Router       /api/v1/villages [get]
+// @Router       /villages [get]
 func (v *villagesController) getAll(c echo.Context) error {
 	keyword := c.QueryParam("keyword")
 
-	villages, err := v.service.GetAll(context.Background(), keyword)
+	villages, err := v.service.GetAll(c.Request().Context(), keyword)
 	if err != nil {
 		return newErrorResponse(err)
 	}
@@ -56,11 +55,11 @@ func (v *villagesController) getAll(c echo.Context) error {
 // @Success      200  {object}  villageResponse
 // @Failure      404  {object}  echo.HTTPError
 // @Failure      500  {object}  echo.HTTPError
-// @Router       /api/v1/villages/{id} [get]
+// @Router       /villages/{id} [get]
 func (v *villagesController) getByID(c echo.Context) error {
 	id := c.Param("id")
 
-	village, err := v.service.GetByID(context.Background(), id)
+	village, err := v.service.GetByID(c.Request().Context(), id)
 	if err != nil {
 		return newErrorResponse(err)
 	}
