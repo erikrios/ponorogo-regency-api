@@ -222,10 +222,7 @@ func mapToProvincesModel(entities []entity.Province) []model.Province {
 	provinces := make([]model.Province, len(entities))
 
 	for i, e := range entities {
-		provinces[i] = model.Province{
-			ID:   e.ID,
-			Name: e.Name,
-		}
+		provinces[i] = mapToProvinceModel(e)
 	}
 
 	return provinces
