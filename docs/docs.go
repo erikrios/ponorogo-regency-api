@@ -471,14 +471,22 @@ const docTemplate = `{
                 }
             }
         },
-        "controller.provincesResponse": {
+        "controller.provincesData": {
             "type": "object",
             "properties": {
-                "data": {
+                "provices": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.Province"
                     }
+                }
+            }
+        },
+        "controller.provincesResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/controller.provincesData"
                 },
                 "message": {
                     "type": "string"

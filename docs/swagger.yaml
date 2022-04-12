@@ -29,12 +29,17 @@ definitions:
       status:
         type: string
     type: object
-  controller.provincesResponse:
+  controller.provincesData:
     properties:
-      data:
+      provices:
         items:
           $ref: '#/definitions/model.Province'
         type: array
+    type: object
+  controller.provincesResponse:
+    properties:
+      data:
+        $ref: '#/definitions/controller.provincesData'
       message:
         type: string
       status:
