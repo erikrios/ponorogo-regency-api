@@ -76,7 +76,7 @@ func TestDistrictsController(t *testing.T) {
 					if assert.NoError(t, json.Unmarshal([]byte(body), &response)) {
 						status := response["status"].(string)
 						message := response["message"].(string)
-						data := response["data"].([]any)
+						data := response["data"].(map[string]any)["districts"].([]any)
 
 						assert.Equal(t, "success", status)
 						assert.Equal(t, "successfully get districts", message)
@@ -301,7 +301,7 @@ func TestDistrictsController(t *testing.T) {
 					if assert.NoError(t, json.Unmarshal([]byte(body), &response)) {
 						status := response["status"].(string)
 						message := response["message"].(string)
-						data := response["data"].([]any)
+						data := response["data"].(map[string]any)["villages"].([]any)
 
 						assert.Equal(t, "success", status)
 						assert.Equal(t, fmt.Sprintf("successfully get villages with district ID %s", dummyVillages[0].District.ID), message)
@@ -412,7 +412,7 @@ func TestDistrictsController(t *testing.T) {
 					if assert.NoError(t, json.Unmarshal([]byte(body), &response)) {
 						status := response["status"].(string)
 						message := response["message"].(string)
-						data := response["data"].([]any)
+						data := response["data"].(map[string]any)["villages"].([]any)
 
 						assert.Equal(t, "success", status)
 						assert.Equal(t, fmt.Sprintf("successfully get villages with district keyword name %s", dummyVillages[0].District.Name), message)

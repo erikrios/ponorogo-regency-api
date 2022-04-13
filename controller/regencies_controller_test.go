@@ -72,7 +72,7 @@ func TestRegenciesController(t *testing.T) {
 					if assert.NoError(t, json.Unmarshal([]byte(body), &response)) {
 						status := response["status"].(string)
 						message := response["message"].(string)
-						data := response["data"].([]any)
+						data := response["data"].(map[string]any)["regencies"].([]any)
 
 						assert.Equal(t, "success", status)
 						assert.Equal(t, "successfully get regencies", message)
