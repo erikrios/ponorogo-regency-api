@@ -9,12 +9,17 @@ definitions:
       status:
         type: string
     type: object
-  controller.districtsResponse:
+  controller.districtsData:
     properties:
-      data:
+      districts:
         items:
           $ref: '#/definitions/model.District'
         type: array
+    type: object
+  controller.districtsResponse:
+    properties:
+      data:
+        $ref: '#/definitions/controller.districtsData'
       message:
         type: string
       status:
@@ -45,12 +50,17 @@ definitions:
       status:
         type: string
     type: object
-  controller.regenciesResponse:
+  controller.regenciesData:
     properties:
-      data:
+      regencies:
         items:
           $ref: '#/definitions/model.Regency'
         type: array
+    type: object
+  controller.regenciesResponse:
+    properties:
+      data:
+        $ref: '#/definitions/controller.regenciesData'
       message:
         type: string
       status:
@@ -74,12 +84,17 @@ definitions:
       status:
         type: string
     type: object
-  controller.villagesResponse:
+  controller.villagesData:
     properties:
-      data:
+      villages:
         items:
           $ref: '#/definitions/model.Village'
         type: array
+    type: object
+  controller.villagesResponse:
+    properties:
+      data:
+        $ref: '#/definitions/controller.villagesData'
       message:
         type: string
       status:

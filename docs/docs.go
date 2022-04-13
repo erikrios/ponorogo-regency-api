@@ -440,14 +440,22 @@ const docTemplate = `{
                 }
             }
         },
-        "controller.districtsResponse": {
+        "controller.districtsData": {
             "type": "object",
             "properties": {
-                "data": {
+                "districts": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.District"
                     }
+                }
+            }
+        },
+        "controller.districtsResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/controller.districtsData"
                 },
                 "message": {
                     "type": "string"
@@ -496,14 +504,22 @@ const docTemplate = `{
                 }
             }
         },
-        "controller.regenciesResponse": {
+        "controller.regenciesData": {
             "type": "object",
             "properties": {
-                "data": {
+                "regencies": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.Regency"
                     }
+                }
+            }
+        },
+        "controller.regenciesResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/controller.regenciesData"
                 },
                 "message": {
                     "type": "string"
@@ -541,14 +557,22 @@ const docTemplate = `{
                 }
             }
         },
-        "controller.villagesResponse": {
+        "controller.villagesData": {
             "type": "object",
             "properties": {
-                "data": {
+                "villages": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.Village"
                     }
+                }
+            }
+        },
+        "controller.villagesResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/controller.villagesData"
                 },
                 "message": {
                     "type": "string"
