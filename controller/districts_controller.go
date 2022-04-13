@@ -43,7 +43,9 @@ func (d *districtsController) getAll(c echo.Context) error {
 		return newErrorResponse(err)
 	}
 
-	response := model.NewResponse("success", "successfully get districts", districts)
+	districtsResponse := map[string]any{"districts": districts}
+
+	response := model.NewResponse("success", "successfully get districts", districtsResponse)
 	return c.JSON(http.StatusOK, response)
 }
 
@@ -88,7 +90,9 @@ func (p *districtsController) getVillagesByDistrictID(c echo.Context) error {
 		return newErrorResponse(err)
 	}
 
-	response := model.NewResponse("success", fmt.Sprintf("successfully get villages with district ID %s", id), villages)
+	villagesResponse := map[string]any{"villages": villages}
+
+	response := model.NewResponse("success", fmt.Sprintf("successfully get villages with district ID %s", id), villagesResponse)
 	return c.JSON(http.StatusOK, response)
 }
 
@@ -110,15 +114,21 @@ func (p *districtsController) getVillagesByDistrictName(c echo.Context) error {
 		return newErrorResponse(err)
 	}
 
-	response := model.NewResponse("success", fmt.Sprintf("successfully get villages with district keyword name %s", keyword), villages)
+	villagesResponse := map[string]any{"villages": villages}
+
+	response := model.NewResponse("success", fmt.Sprintf("successfully get villages with district keyword name %s", keyword), villagesResponse)
 	return c.JSON(http.StatusOK, response)
 }
 
 // districtsResponse struct is used for swaggo to generate the API documentation, as it doesn't support generic yet.
 type districtsResponse struct {
-	Status  string           `json:"status"`
-	Message string           `json:"message"`
-	Data    []model.District `json:"data"`
+	Status  string        `json:"status"`
+	Message string        `json:"message"`
+	Data    districtsData `json:"data"`
+}
+
+type districtsData struct {
+	Districts []model.District `json:"districts"`
 }
 
 // districtResponse struct is used for swaggo to generate the API documentation, as it doesn't support generic yet.

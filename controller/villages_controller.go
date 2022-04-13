@@ -41,7 +41,9 @@ func (v *villagesController) getAll(c echo.Context) error {
 		return newErrorResponse(err)
 	}
 
-	response := model.NewResponse("success", "successfully get villages", villages)
+	villagesResponse := map[string]any{"villages": villages}
+
+	response := model.NewResponse("success", "successfully get villages", villagesResponse)
 	return c.JSON(http.StatusOK, response)
 }
 
@@ -70,9 +72,13 @@ func (v *villagesController) getByID(c echo.Context) error {
 
 // villagesResponse struct is used for swaggo to generate the API documentation, as it doesn't support generic yet.
 type villagesResponse struct {
-	Status  string          `json:"status"`
-	Message string          `json:"message"`
-	Data    []model.Village `json:"data"`
+	Status  string       `json:"status"`
+	Message string       `json:"message"`
+	Data    villagesData `json:"data"`
+}
+
+type villagesData struct {
+	Villages []model.Village `json:"villages"`
 }
 
 // villageResponse struct is used for swaggo to generate the API documentation, as it doesn't support generic yet.

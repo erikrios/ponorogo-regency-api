@@ -41,7 +41,7 @@ func (p *provincesController) getAll(c echo.Context) error {
 		return newErrorResponse(err)
 	}
 
-	provincesResponse := map[string][]model.Province{"provinces": provinces}
+	provincesResponse := map[string]any{"provinces": provinces}
 	response := model.NewResponse("success", "successfully get provinces", provincesResponse)
 	return c.JSON(http.StatusOK, response)
 }
