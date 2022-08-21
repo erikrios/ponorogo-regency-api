@@ -1,7 +1,7 @@
 module github.com/erikrios/ponorogo-regency-api
 
-// +heroku goVersion go1.18
-go 1.18
+// +heroku goVersion go1.19
+go 1.19
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
