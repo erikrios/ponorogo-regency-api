@@ -28,8 +28,8 @@ import (
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      ponorogo-api.herokuapp.com
-// @BasePath  /api/v1
+// @host       ponorogo-api.herokuapp.com
+// @BasePath   /api/v1
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	if err := godotenv.Load(".env"); err != nil {
