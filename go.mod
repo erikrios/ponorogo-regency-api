@@ -9,7 +9,6 @@ require (
 	github.com/labstack/echo/v4 v4.7.2
 	github.com/lib/pq v1.10.4
 	github.com/stretchr/testify v1.7.1
-	github.com/swaggo/echo-swagger v1.3.0
 	github.com/swaggo/swag v1.8.1
 	google.golang.org/grpc v1.48.0
 	google.golang.org/protobuf v1.28.1
@@ -33,7 +32,6 @@ require (
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/objx v0.1.0 // indirect
-	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	golang.org/x/crypto v0.0.0-20220131195533-30dcbda58838 // indirect
