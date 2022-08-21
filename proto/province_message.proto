@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package erikrios.ponorogoregencyapi;
+
+option go_package = ".;pb";
+
+message Province {
+  string id = 1;
+  string name = 2;
+}
