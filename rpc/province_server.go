@@ -42,3 +42,25 @@ func (p *ProvinceServer) GetProvinces(
 
 	return
 }
+
+func (p *ProvinceServer) GetProvince(
+	ctx context.Context,
+	req *pb.GetProvinceRequest,
+) (res *pb.GetProvinceResponse, err error) {
+	id := req.GetId()
+
+	response, serviceErr := p.service.GetByID(ctx, id)
+	if serviceErr != nil {
+		err = handleError(serviceErr)
+		return
+	}
+
+	res = &pb.GetProvinceResponse{
+		Province: &pb.Province{
+			Id:   response.ID,
+			Name: response.Name,
+		},
+	}
+
+	return
+}
