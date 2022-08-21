@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProvinceServiceClient interface {
 	GetProvinces(ctx context.Context, in *GetProvincesRequest, opts ...grpc.CallOption) (*GetProvincesResponse, error)
+	GetProvince(ctx context.Context, in *GetProvinceRequest, opts ...grpc.CallOption) (*GetProvinceResponse, error)
 }
 
 type provinceServiceClient struct {
@@ -42,11 +43,21 @@ func (c *provinceServiceClient) GetProvinces(ctx context.Context, in *GetProvinc
 	return out, nil
 }
 
+func (c *provinceServiceClient) GetProvince(ctx context.Context, in *GetProvinceRequest, opts ...grpc.CallOption) (*GetProvinceResponse, error) {
+	out := new(GetProvinceResponse)
+	err := c.cc.Invoke(ctx, "/erikrios.ponorogoregencyapi.ProvinceService/GetProvince", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProvinceServiceServer is the server API for ProvinceService service.
 // All implementations must embed UnimplementedProvinceServiceServer
 // for forward compatibility
 type ProvinceServiceServer interface {
 	GetProvinces(context.Context, *GetProvincesRequest) (*GetProvincesResponse, error)
+	GetProvince(context.Context, *GetProvinceRequest) (*GetProvinceResponse, error)
 	mustEmbedUnimplementedProvinceServiceServer()
 }
 
@@ -56,6 +67,9 @@ type UnimplementedProvinceServiceServer struct {
 
 func (UnimplementedProvinceServiceServer) GetProvinces(context.Context, *GetProvincesRequest) (*GetProvincesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProvinces not implemented")
+}
+func (UnimplementedProvinceServiceServer) GetProvince(context.Context, *GetProvinceRequest) (*GetProvinceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProvince not implemented")
 }
 func (UnimplementedProvinceServiceServer) mustEmbedUnimplementedProvinceServiceServer() {}
 
@@ -88,6 +102,24 @@ func _ProvinceService_GetProvinces_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProvinceService_GetProvince_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProvinceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProvinceServiceServer).GetProvince(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/erikrios.ponorogoregencyapi.ProvinceService/GetProvince",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProvinceServiceServer).GetProvince(ctx, req.(*GetProvinceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProvinceService_ServiceDesc is the grpc.ServiceDesc for ProvinceService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +130,10 @@ var ProvinceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProvinces",
 			Handler:    _ProvinceService_GetProvinces_Handler,
+		},
+		{
+			MethodName: "GetProvince",
+			Handler:    _ProvinceService_GetProvince_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
