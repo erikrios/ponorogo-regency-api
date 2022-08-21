@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package erikrios.ponorogoregencyapi;
+
+option go_package = ".;pb";
+
+import "province_message.proto";
+import "filter_message.proto";
+
+message GetProvincesRequest { Filter filter = 1; }
+
+message GetProvincesResponse { repeated Province provinces = 1; }
+
+message GetProvinceRequest { string id = 1; }
+
+message GetProvinceResponse { Province province = 1; }
+
+service ProvinceService {
+    rpc GetProvinces(GetProvincesRequest) returns (GetProvincesResponse) {};
+    rpc GetProvince(GetProvinceRequest) returns (GetProvinceResponse) {};
+}
